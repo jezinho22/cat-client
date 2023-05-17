@@ -1,6 +1,10 @@
 import "./App.css";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import Home from "./pages/Home";
+import About from "./pages/About";
+import CatPage from "./pages/CatPage";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 
 function App() {
 	const [cats, setCats] = useState([]);
@@ -53,42 +57,27 @@ function App() {
 	}
 
 	return (
-		<div className="App">
-			<h1>Cats</h1>
-			<form onSubmit={postCat}>
-				<input
-					name="name"
-					placeholder="Name"
-					onChange={handleChange}
-					value={form.name}></input>
-				<input
-					name="colour"
-					placeholder="colour"
-					onChange={handleChange}
-					value={form.colour}></input>
-				<input
-					name="location"
-					placeholder="location"
-					onChange={handleChange}
-					value={form.location}></input>
-				<input type="submit" />
-				{/* <input name="hasClaws" placeholder="claws"></input> */}
-			</form>
-			<div className="catWrap">
-				{cats.map((cat) => {
-					return (
-						<div>
-							<h3>{cat.name}</h3>
-							<p>{cat.colour}</p>
-							<p>Claws? {cat.hasClaws}</p>
-							<p>{cat.location}</p>
-
-							<button onClick={() => deleteCats(cat._id)}>Delete</button>
-						</div>
-					);
-				})}
+		<BrowserRouter>
+			<div className="App">
+				<h1>Cats!!</h1>
+				<Routes>
+					<Route
+						path="/"
+						element={
+							<Home
+								cats={cats}
+								form={form}
+								handleChange={handleChange}
+								postCat={postCat}
+								deleteCats={deleteCats}
+							/>
+						}
+					/>
+					<Route path="/about" element={<About />} />
+					<Route path="/cats/:id" element={<CatPage />} />
+				</Routes>
 			</div>
-		</div>
+		</BrowserRouter>
 	);
 }
 
